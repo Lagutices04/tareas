@@ -1,0 +1,32 @@
+{% load static %}
+
+{% extends 'base.html' %}
+<!--esta heredando contenido de base.html-->
+{% block content %}
+
+<h1>{{task.title}}</h1>
+<!--mostrara solo el titulo de la tarea-->
+{{error}}
+
+ <form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button>
+        save
+    </button>
+ </form>
+
+ <form action="{% url 'complete_task' task.id %}"  method="POST">
+    {% csrf_token %}
+ <button>
+    completadooo
+ </button>
+
+ <form action="{% url 'delete_task' task.id %}"  method="POST">
+    {% csrf_token %}
+ <button>
+    eliminadooo
+ </button>
+
+ </form>
+{% endblock %}

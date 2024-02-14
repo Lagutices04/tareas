@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>registro</h1>
+{{error}}
+<form  method="POST">
+    <!--el action ejecutara un boton
+    pondra los datos donde yo lo coloque,por medio de las rutas que tengo el el archivo urls
+los datos se enviaran al metodo post-->
+    {% csrf_token %}
+    <!---->
+    {{form.as_p}}
+    <!--el {{form.as_p}}de esta manera se llama el metodo creado en python
+    para que se vea en el html
+   el.as_p correra los elementos del formulario uno al lado del otro-->
+
+   <button>
+    Signup
+   </button>
+</form>
+{% endblock %}

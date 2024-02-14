@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>tareas penndientes ctm</h1>
+
+<ul>
+    <!--se recorrera por medio de un arreglo-->
+    {% for task in tasks %}
+<!--tasks es el dato que se esta pasando desde el backend
+para cada elemento en el arreglo empieza a recorrerlo
+--> 
+   <li>
+    <a href="{% url 'task_detail' task.id %}">
+        <!--como es una variable dinamica se escribe de esa forma
+        lo enviara al task detail con el parametro task id,permitiendo buscar las tareas por su id -->
+        {% if tassk.important %}
+        <strong>{{task.title}}</strong>
+        {% else %}
+         {{task.title}}
+         {% endif %}
+        
+        <p>{{task.description}}</p>
+        <p>{{task.user.username}}</p>
+        <p>{{task.datecompleted  | date:'M j Y:i'}}</p>
+        <!--fecha de cuando fue completada esa tarea-->
+       
+        {% if task.field %}
+        <p>Archivo Adjunto: <a href="{{ task.field.url }}" target="_blank">{{ task.field.name }}</a></p>
+        <!--si el usuario subio una tarea mostrrara esto-->
+    
+        {% else %}
+        <p>no hay archivos adjuntos</p>
+        {% endif %} 
+    </a>
+   </li>
+{% endfor %}
+</ul>
+
+  
+
+{% endblock %}
