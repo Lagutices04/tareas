@@ -1,33 +1,58 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<style>
+    /* Estilos específicos para la página de detalles de la tarea */
+    h1 {
+        font-size: 24px; /* Tamaño del título */
+        margin-bottom: 20px; /* Espacio inferior */
+    }
 
-<!--esta heredando contenido de base.html-->
+    form {
+        max-width: 400px; /* Ancho máximo del formulario */
+        margin: 0 auto; /* Centrar horizontalmente */
+    }
+
+    form button {
+        background-color: #007bff; /* Color de fondo del botón */
+        color: white; /* Color del texto del botón */
+        border: none; /* Sin borde */
+        padding: 10px 20px; /* Relleno */
+        border-radius: 5px; /* Bordes redondeados */
+        cursor: pointer; /* Cursor de puntero */
+        margin-top: 10px; /* Espacio superior */
+    }
+
+    form button:hover {
+        background-color: #0056b3; /* Color de fondo del botón al pasar el mouse */
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-
 <h1>{{task.title}}</h1>
 <!--mostrara solo el titulo de la tarea-->
+<a href="{% url 'create_nota'  %}">Calificar Tarea</a>
+
+
+
 {{error}}
 
- <form method="POST">
+<form method="POST">
     {% csrf_token %}
     {{form.as_p}}
-    <button>
-        save
-    </button>
- </form>
+    <button type="submit">Save</button>
+</form>
 
- <form action="{% url 'complete_task' task.id %}"  method="POST">
+<form action="{% url 'complete_task' task.id %}" method="POST">
     {% csrf_token %}
- <button>
-    completadooo
- </button>
+    <button type="submit">Completado</button>
+</form>
 
- <form action="{% url 'delete_task' task.id %}"  method="POST">
+<form action="{% url 'delete_task' task.id %}" method="POST">
     {% csrf_token %}
- <button>
-    eliminadooo
- </button>
-
- </form>
+    <button type="submit">Eliminado</button>
+</form>
 {% endblock %}
+

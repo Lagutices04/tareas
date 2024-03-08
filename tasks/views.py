@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 #el login creara la cookie
 from django.db import IntegrityError
-from .forms import TaskForm
-from .models import Task
+from .forms import TaskForm, CalificacionForm
+from .models import Task, Calificacion
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 #protege cualquier funcion
@@ -52,7 +52,6 @@ def signup(request):
                     "error" : 'contraseña no coincide'
         #etiqueta django que hace formularios desde django al html
     })
-
 
 @login_required 
 def tasks(request):
@@ -114,7 +113,7 @@ def task_detail(request, task_id):
             form.save()
             return redirect('tasks')
         except ValueError:
-            return render (request, 'task_detail',{'task':task,'form':form, 'error':'error al momento de actializar la tarea miau'})
+            return render (request, 'task_detail',{'task':task,'form':form, 'error':'error al momento de actializar la tarea '})
 
 @login_required
 def complete_task(request,task_id):
@@ -130,12 +129,31 @@ def complete_task(request,task_id):
   #lo re direccionara a la vista de tareas
   
 @login_required
-def delete_task(request,task_id):
-  task =  get_object_or_404(Task, pk=task_id, user=request.user )
-  if request.method == 'POST':
-      task.delete()
-      return redirect('tasks')
+def delete_task(request, task_id):
+    task = get_object_or_404(Task, pk=task_id, user=request.user)
+    if request.method == 'POST':
+        task.delete()
+        return redirect('tasks')
+    return redirect('task_detail', task_id=task_id)
 
+@login_required  
+def calificar_tarea(request, task_id):
+    tarea = Task.objects.get(id=task_id)
+    
+    if request.method == 'POST':
+        form = CalificacionForm(request.POST)
+        if form.is_valid():
+            calificacion = form.save(commit=False)
+            calificacion.tarea = tarea
+            calificacion.usuario = request.user
+            calificacion.save()
+            return redirect('task_detail', task_id=task_id)
+    else:
+        form = CalificacionForm()
+    
+    return render(request, 'calificar_tarea.html', {'form': form, 'tarea': tarea})
+
+            
 @login_required               
 def signout(request):
     logout(request)
@@ -162,6 +180,77 @@ def signin(request):
       
           
 
+
+
+#def calificar_tarea(request, tarea_id):
+ #   tarea = Task.objects.get(pk=tarea_id)
+    
+    if request.method == 'POST':
+        form = CalificacionForm(request.POST)
+        if form.is_valid():
+            calificacion = form.save(commit=False)
+            calificacion.task = tarea
+            calificacion.usuario = request.user
+            calificacion.save()
+            return redirect('task_detail', task_id=tarea_id)  # Redirige a la vista de detalle de tarea
+    else:
+        form = CalificacionForm()
+    
+    return render(request, 'calificartarea.html', {'form': form, 'tarea': tarea})
    
         
-        
+def nota(request):
+    notas = Calificacion.objects.filter(student=request.user)
+    total_notas = notas.count()
+    promedio = sum([nota.average for nota in notas]) / total_notas if total_notas > 0 else 0
+    return render(request, 'notas.html', {'notas': notas, 'promedio': promedio})
+def create_nota(request):
+    if request.method == 'GET':
+        return render(request, 'create_nota.html', {'form': CalificacionForm})
+    else:
+        try:
+            form = CalificacionForm(request.POST, request.FILES)
+            if form.is_valid():
+                new_nota = form.save(commit=False)
+                new_nota.user = request.user
+                new_nota.save()
+                return redirect('notas')
+        except ValueError:
+            return render(request, 'create_nota.html', {
+                'form': CalificacionForm,
+                'error': 'Por favor, envía datos válidos'
+            })
+         
+@login_required
+def nota_detail(request, nota_id):
+    nota = get_object_or_404(Calificacion, pk=nota_id, student=request.user)
+    if request.method == 'POST':
+        form = CalificacionForm(request.POST, instance=nota)
+        if form.is_valid():
+            form.save()
+            return redirect('notas')
+    else:
+        form = CalificacionForm(instance=nota)
+    return render(request, 'notas_detail.html', {'nota': nota, 'form': form})
+
+            
+def complete_nota(request,task_id):
+  task =  get_object_or_404(Calificacion, pk=task_id, user=request.user )
+
+  if request.method == 'POST':
+      nota.save()
+      return redirect('tasks')
+
+  
+@login_required
+def delete_nota(request,task_id):
+  task =  get_object_or_404(Calificacion, pk=task_id, user=request.user )
+  if request.method == 'POST':
+      nota.delete()
+      return redirect('tasks')   
+    
+    
+@login_required
+def lista_notas(request):
+    notas = Calificacion.objects.filter(student=request.user)
+    return render(request, 'lista_notas.html', {'notas': notas})

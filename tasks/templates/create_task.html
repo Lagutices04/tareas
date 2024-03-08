@@ -1,16 +1,68 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<h1>crear tareas papus</h1>
-{{error}}
-<form action="/tasks/create/" method="post"  enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form}}
+{% block extra_css %}
+<style>
+    .form-container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-    <button>
-        subir
-    </button>
- 
-</form>
+    .form-container h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
+    .form-container label {
+        font-weight: bold;
+    }
+
+    .form-container input[type="text"],
+    .form-container textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    .form-container button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .form-container button:hover {
+        background-color: #0056b3;
+    }
+</style>
 {% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Crear Tarea</h1>
+
+    <form action="/tasks/create/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="id_title">Título:</label>
+        {{ form.title }}
+
+        <label for="id_description">Descripción:</label>
+        {{ form.description }}
+
+        <label for="id_field">Archivo Adjunto:</label>
+        {{ form.field }}
+
+        <button type="submit">Subir</button>
+    </form>
+</div>
+{% endblock %}
+

@@ -1,20 +1,63 @@
 {% extends 'base.html' %}
-{% block content %}
-<h1>registro</h1>
-{{error}}
-<form  method="POST">
-    <!--el action ejecutara un boton
-    pondra los datos donde yo lo coloque,por medio de las rutas que tengo el el archivo urls
-los datos se enviaran al metodo post-->
-    {% csrf_token %}
-    <!---->
-    {{form.as_p}}
-    <!--el {{form.as_p}}de esta manera se llama el metodo creado en python
-    para que se vea en el html
-   el.as_p correra los elementos del formulario uno al lado del otro-->
+{% block extra_css %}
+<style>
+    /* Estilos específicos para el formulario de registro */
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
 
-   <button>
-    Signup
-   </button>
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    form button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    form button:hover {
+        background-color: #0056b3;
+    }
+
+    form label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    form input[type="text"]:focus,
+    form input[type="email"]:focus,
+    form input[type="password"]:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Registro</h1>
+{{error}}
+<form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Signup</button>
 </form>
 {% endblock %}
+

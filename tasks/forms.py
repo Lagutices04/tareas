@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Task
+from .models import Task, Calificacion
 
 
 class TaskForm(forms.ModelForm, ):
@@ -14,8 +14,11 @@ class TaskForm(forms.ModelForm, ):
         super(TaskForm, self).__init__(*args, **kwargs)
         self.fields['field'].widget = forms.ClearableFileInput(attrs={'multiple': False})
         #el clearblefileinput permite seleccionar varios archivos
-        
-       
+
+class CalificacionForm(forms.ModelForm):
+    class Meta:
+        model = Calificacion
+        fields = ['student','mark1','mark2','mark3','average','tareas']     
 
        
      

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Notas</title>
+    <style>
+        .nota-container {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .nota-info {
+            font-weight: bold;
+        }
+        .tarea-title {
+            font-style: italic;
+            color: #888;
+        }
+        .tarea-info {
+            font-size: 0.8em;
+            margin-top: 5px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Notas</h1>
+    {% for nota in notas %}
+    <div class="nota-container">
+        <div class="nota-info">
+            <span>Estudiante: {{ nota.student.username }}</span><br>
+            <span class="tarea-title">Tarea:</span> {{ nota.tareas.title }}<br>
+            <span>Nota 1:</span> {{ nota.mark1 }}<br>
+            <span>Nota 2:</span> {{ nota.mark2 }}<br>
+            <span>Nota 3:</span> {{ nota.mark3 }}<br>
+            <span>Promedio:</span> {{ nota.average }}<br>
+        </div>
+        <div class="tarea-info">
+       
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>
+
+

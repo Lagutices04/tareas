@@ -30,12 +30,21 @@ urlpatterns = [
      path('signup/',views.signup, name='signup'),
      path('tasks/',views.tasks, name='tasks'),
      path('tasks_completed/',views.tasks_completed, name='task_completed'),
-
      path('tasks/create/',views.create_task,name='create_task'),
-     path('tasks/<int:task_id>/',views.task_detail,name='task_detail'),
      #<int:task_id>: significa que es un dato id entero,y se enviara al task_detail
+     path('tasks/calificar_tarea/', views.calificar_tarea, name='calificar_tarea'),
+     path('tasks/create_nota/',views.create_nota,name='create_nota'),
+     path('tasks/notas/', views.nota, name='notas'),
+     path('notas/', views.lista_notas, name='notas'),
+     path('tasks/<int:task_id>/nota_detail/', views.nota_detail, name='nota_detail'),
      path('tasks/<int:task_id>/complete/',views.complete_task,name='complete_task'),
-     path('tasks/<int:task_id>/delete/',views.delete_task,name='delete_task'),
+     path('tasks/<int:task_id>/delete/',views.delete_task,name='delete_task'), 
+     path('tasks/<int:task_id>/', views.task_detail, name='task_detail'),
+     path('tasks/<int:task_id>/',views.task_detail,name='task_detail'),
+     path('notas/<int:nota_id>/', views.nota_detail, name='nota_detail'),
+     path('notas/<int:nota_id>/complete/', views.complete_nota, name='complete_nota'),
+     path('notas/<int:nota_id>/delete/', views.delete_nota, name='delete_nota'),
+
      path('logout/',views.signout,name='logout'),
      path('signin/',views.signin,name='signin'),
 ]

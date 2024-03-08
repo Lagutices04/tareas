@@ -1,0 +1,17 @@
+<h1>crear notas</h1>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>crear tareas papus</h1>
+{{error}}
+<form action="/tasks/create_nota/" method="post"  enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form}}
+
+    <button>
+        subir notas
+    </button>
+ 
+</form>
+{% endblock %}

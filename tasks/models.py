@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+
+
 #habra una relacion de tablas de tasks con los user generados en views.py
 
 class Task(models.Model):
@@ -16,8 +18,38 @@ class Task(models.Model):
    
     def __str__(self):
      return f"{self.title} by {self.user.username}"
-
    #se concardena el titulo de la tarea y el usuario que la envia
+
+
+
+class Calificacion(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    tareas= models.ForeignKey(Task, on_delete=models.CASCADE, null=True, blank=True)
+    mark1 = models.PositiveIntegerField(null=True, blank=True, verbose_name='nota1')
+    mark2 = models.PositiveIntegerField(null=True, blank=True, verbose_name='nota2')
+    mark3 = models.PositiveIntegerField(null=True, blank=True, verbose_name='nota3')
+    average = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name='promedio')
+    
+    def __str__(self):
+        return f"Calificación de {self.student.username}"
+
+    
+    #calcular rl promedio llamando a la funcion
+    def calculate_average(self):
+        marks = [self.mark1, self.mark2, self.mark3]
+        valid_marks = [mark for mark in marks if mark is not None]
+        if valid_marks:
+            return sum(valid_marks) / len(valid_marks)
+        return None
+    
+    def save(self, *args, **kwargs):
+        if self.mark1 or self.mark2 or self.mark3:
+            self.average = self.calculate_average()
+        super().save(*args, **kwargs)
+        
+    class Meta:
+        verbose_name ='nota'
+        verbose_name_plural='notas'
 
 
     
